@@ -5,8 +5,12 @@ const { register,
         checkAuth } = require("../controllers/auth");
 
 const router = express.Router();
+
+//=== Auth ===
 router.post("/register", register);
 router.post("/login", login)
 router.get("/check-auth", auth, checkAuth);
+
+//===
 
 module.exports = router 
