@@ -3,7 +3,7 @@ Model Migrations
 user : 
 npx sequelize-cli model:generate --name user --attributes email:string,password:string,name:string,role:string
 book :
-npx sequelize-cli model:generate --name book --attributes title:string,year:dateonly,author:string,pages:string,ISBN:bigint,desc:text,bookPdf:string,bookImg:string
+npx sequelize-cli model:generate --name book --attributes title:string,year:dateonly,author:string,pages:string,ISBN:bigint,price:bigint,desc:text,bookPdf:string,bookImg:string
 profile :
 npx sequelize-cli model:generate --name profile --attributes gender:string,phone:string,address:string,avatar:string,idUser:integer
 cart : 
