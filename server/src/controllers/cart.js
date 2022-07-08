@@ -93,3 +93,28 @@ exports.getCart = async (req, res) => {
         })       
     }
 }
+
+//== Menghapus Cart
+exports.deleteCart = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        await cart.destroy({
+            where: {
+                id,
+            }
+        })
+
+        res.send({
+            status: "Success"
+          });
+
+
+    } catch (error) {
+        console.log(error);
+        res.send({
+        status: "Failed",
+        message: "Kesalahan Hapus Cart",
+        });
+    }
+}
