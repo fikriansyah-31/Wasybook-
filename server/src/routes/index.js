@@ -1,15 +1,21 @@
 const express = require("express");
 const { auth } = require("../middlewares/auth.js");
 const { uploadFiles } = require("../middlewares/uploadFiles.js");
+
 const { register,
         login,
         checkAuth } = require("../controllers/auth");
+
 const { getBooks,
         addBooks,
         getBook,
         updateBooks,
         promoBooks,
         deleteBook, } = require("../controllers/book");
+
+const { addCart,
+        getCart,
+        deleteCart,} = require ("../controllers/cart")
 
 const router = express.Router();
 
@@ -26,5 +32,9 @@ router.delete("/delete-book/:id", deleteBook)
 router.patch("/book/:id", auth, uploadFiles("bookPdf", "bookImg"), updateBooks);
 router.post("/book", auth, uploadFiles("bookPdf", "bookImg"), addBooks)
 
+//== Cart ===
+router.post("/cart", addCart)
+router.delete("/cart/:id", deleteCart)
+router.get("carts", getCart)
 
 module.exports = router 
