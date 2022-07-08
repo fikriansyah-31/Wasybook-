@@ -1,4 +1,5 @@
 import Books from "../component/halaman utama/SlideBook"
+import background from "../assets/img/background.png";
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import logo from '../assets/img/WaysBookLogo.png'
@@ -13,22 +14,28 @@ import Register from '../component/halaman utama/Register'
 function Landingpage() {
     const [loginShow, setLoginShow] = useState(false);
     const [registerShow, setRegisterShow] = useState(false);
+    
 
     const registerHere = (e) => {
         e.preventDefault();
         setRegisterShow(false);
-        setLoginShow(true);
+        setLoginShow(false);
     }
 
     const loginHere = (e) => {
         e.preventDefault();
         setLoginShow(false);
-        setRegisterShow(true);
+        setRegisterShow(false);
     }
 
     return (
+
         <>
-            <div>
+        <div  style={{
+            backgroundImage: `url(${background})`,
+            backgroundSize: "100%",
+            width: "100%",
+          }}>
                 <div className="bodyHome">
                     <div className="backgroundImage">
                         <Navbar bg="transparent" expand="lg" >
@@ -49,8 +56,7 @@ function Landingpage() {
                     </div>
                 </div>
             </div>
-            <Login loginHere={loginHere} loginShow={loginShow} setLoginShow={setLoginShow} setRegisterShow={setRegisterShow} />
-            <Register registerHere={registerHere} registerShow={registerShow} setRegisterShow={setRegisterShow} setLoginShow={setLoginShow} />
+           
 
         </>
     );
