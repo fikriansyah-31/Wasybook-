@@ -1,4 +1,5 @@
 const { user, book, cart } = require("../../models") 
+const { get } = require("../routes")
 
 //== Menambahkan Cart
 exports.addCart = async (req, res) => {
@@ -40,5 +41,55 @@ exports.addCart = async (req, res) => {
         status: "Failed",
         message: "Kesalahan Menambahkan Cart",
         });       
+    }
+}
+
+//== All Data Cart
+exports.getCart = async (req, res) => {
+    try {
+        let idUser = req.user.id
+
+        let getCart = await cart.findAll({
+            where : {
+                idUser : idUser
+            },
+            attributes:{
+                exclude :["createAt", "updateAt"]
+            },
+            include :[
+                {
+                    model : user,
+                    as: "user",
+                    attributes:{
+                        exclude: ["createdAt", "password", "updatedAt", "id"]
+                    },
+                },
+                {
+                    model: book,
+                    as: "book",
+                    attributes: {
+                        exclude: ["createAt", "updateAt"]
+                    }
+                }
+            ]
+        })
+
+        getCart = getCart.map((item) => {
+            item.book.bookPdf = process.env.PATH_FILE_PDF + item.book.bookPdf;
+            item.book.bookImg = process.env.PATH_FILE_IMG + item.book.bookImg;
+            return item;
+        })
+
+        res.send({
+            status: "Success",
+            getCart,
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.send({
+            status: "Failed",
+            message:"Kesalaham menampilkan cart"
+        })       
     }
 }
