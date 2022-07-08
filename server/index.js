@@ -8,11 +8,16 @@ const router = require('./src/routes')
 
 //use express in app variable
 const app = express();
-
-//define the server port
 const port = 5000;
-const http = require("http")
+const http = require("http");
+
+
 const server = http.createServer(app);
+// const io = new Server(server, {
+//   cors: {
+//     origin: "http://localhost:3000", // define client origin if both client and server have different origin
+//   },
+// });
 
 app.use(express.json())
 app.use(bp.json());
