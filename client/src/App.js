@@ -1,11 +1,20 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 
-import './App.css';
+import LandingPage from "./pages/LandingPage";
+import Navbar from "./component/navbar/PublicNavbar";
+import Login from "./component/halaman utama/Login";
+import Register from "./component/halaman utama/Register";
 
 function App() {
   return (
-    <div className="App">
-    <h1> Masih Uji Coba Ya Gaes</h1>
-    </div>
+    
+      <Routes>
+        <Route path="/" element={<LandingPage/>}/>
+        <Route path="/public" element={<Navbar/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
+      </Routes>
+
   );
 }
 

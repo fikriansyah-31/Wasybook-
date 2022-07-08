@@ -8,8 +8,8 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import img from "../../assets/img/contoh.jpg"
-import Img from "../../assets/img/contoh2.jpg"
+import img from "../../assets/img/bookWhite.png"
+import Img from "../../assets/img/WaysBookLogo.png"
 
 function SlideBook() {
 
