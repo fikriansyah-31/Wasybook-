@@ -7,3 +7,165 @@ body {
   color: #fff;
   width: 500;
 }
+@import url('https://fonts.googleapis.com/css2?family=Vollkorn&display=swap');
+
+.dropdown-toggle::after {
+  display: none !important; 
+}
+
+body {
+  background: #f3f3f3 !important;
+}
+
+.bodyHome {
+  width: 100%;
+  height: 25rem;
+  background-color: white;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.backgroundImage {
+  background: url('../assets/left.svg') left top no-repeat, url('../assets/right.svg') right top no-repeat;
+  background-size: 35rem, 35rem;
+  max-height: 50vh;
+}
+
+.backgroundImageFull {
+  background: url('../assets/left.svg') left top no-repeat, url('../assets/right.svg') right top no-repeat;
+  background-size: 25rem, 25rem;
+  min-height: 75vh;
+}
+
+.booksImage {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+}
+
+.booksImageDetail {
+  width: 40%;
+  object-fit: cover;
+}
+
+.slideCard{
+  border-radius: 0 !important;
+  margin: 5rem !important;
+}
+
+.container {
+  width: 100%;
+}
+
+.sentenceHead {
+  font-family: 'Vollkorn', serif !important;
+  text-align: center;
+}
+
+.sentenceSection {
+  font-family: 'Vollkorn', serif !important;
+  font-weight: bold;
+}
+
+.bookTitle {
+  font-family: 'Vollkorn', serif !important;
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.bookTitleDetail {
+  font-family: 'Vollkorn', serif !important;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.bookAuthor {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.bookAuthorDetail {
+  font-size: 14px;
+  font-style: italic;
+}
+
+.detailTitle {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.detailSentence {
+  font-size: 14px;
+}
+
+.bookPrice {
+  font-size: 12px;
+  color: green;
+  font-weight: bold;
+}
+
+.text-truncate-container p {
+  -webkit-line-clamp: 3;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+.profileContainer {
+  background-color: #FFD9D9;
+  border-radius: 5px;
+  padding: 15px;
+}
+
+.form input {
+  background: rgba(210, 210, 210, 0.25);
+  border: 2px solid #bcbcbc;
+  box-sizing: border-box;
+  border-radius: 5px;
+  width: 100%;
+  color: black;
+}
+
+.form textarea {
+  background: rgba(210, 210, 210, 0.25);
+  border: 2px solid #bcbcbc;
+  box-sizing: border-box;
+  border-radius: 5px;
+  width: 100%;
+  color: black;
+}
+
+.btnLogin {
+  background: #393939 !important;
+  border-radius: 0px !important;
+
+  font-style: normal !important;
+  font-weight: 500 !important;
+  font-size: 18px !important;
+  line-height: 25px !important;
+
+  color: #ffffff !important;
+}
+
+.btnHere {
+  position: relative;
+  left: -0.45rem;
+  width: 3rem;
+  overflow: hidden;
+  border: none;
+  background-color: transparent;
+  font-weight: bold;
+}
+
+.label-file-add-book {
+  background: rgba(210, 210, 210, 0.25);
+  border: 2px solid #bcbcbc;
+  color: rgb(126,132,139);
+  padding: 0.5rem 1rem;
+  font-family: sans-serif;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}

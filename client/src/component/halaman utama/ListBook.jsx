@@ -1,6 +1,6 @@
 import React from 'react'
 import { Card, Button, CardGroup } from 'react-bootstrap'
-import IMG from "../../assets/img/WaysBookLogo.png"
+import IMG from "../../assets/img/contoh2.jpg"
 
 const cards = [
     {

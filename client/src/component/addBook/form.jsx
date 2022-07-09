@@ -33,7 +33,7 @@ function form() {
 
                 <input type="file" style={{width : "96%", marginLeft : "1%", marginRight : "1%", borderRadius : "5px"}}/>
                 
-                <Button variant="contained" style={{marginLeft : "1%", marginRight : "1%", display : "flex", justifyContent : "flex-end", float : "right"}}>Add Book</Button>
+                <Button variant="contained" style={{marginLeft : "5%", marginRight : "3%", display : "flex", justifyContent : "flex-end", float : "right", marginBottom:"100px"}}>Add Book</Button>
         </form>
     </div>
   )
