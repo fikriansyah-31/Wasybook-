@@ -1,4 +1,5 @@
 import React from 'react'
+import background from "../assets/img/background.png";
 import AdminNav from '../component/navbar/AdminNav'
 import Navbar from "../component/navbar/PublicNavbar"
 import CustomerNavbar from "../component/navbar/Customer"
@@ -30,7 +31,12 @@ function LandingPage() {
   }
 
   return (
-    <div>
+    <div
+    style={{
+        backgroundImage: `url(${background})`,
+        backgroundSize: "100%",
+        width: "100%",
+      }}>
       <div className="navbar" style={{display : "flex", height : "7vh"}}>
           <Navbar handleClickLogin={handleClickLogin} handleClickRegister={handleClickRegister}/>
       </div>

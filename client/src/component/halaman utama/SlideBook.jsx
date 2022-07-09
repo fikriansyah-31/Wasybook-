@@ -18,7 +18,7 @@ function SlideBook() {
     var settings = {
         dots: true,
         infinite: false,
-        speed: 500,
+        speed: 1000,
         slidesToShow: 4,
         slidesToScroll: 4,
         initialSlide: 0,
