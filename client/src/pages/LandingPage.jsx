@@ -1,65 +1,56 @@
-import Books from "../component/halaman utama/SlideBook"
-import background from "../assets/img/background.png";
-import { Link, useNavigate } from 'react-router-dom'
+import React from 'react'
+import AdminNav from '../component/navbar/AdminNav'
+import Navbar from "../component/navbar/PublicNavbar"
+import CustomerNavbar from "../component/navbar/Customer"
 import { useState } from 'react'
-import logo from '../assets/img/WaysBookLogo.png'
-// import { useContext } from 'react'
-// import { UserContext } from '../context/userContext'
-import Container from 'react-bootstrap/Container'
-import { Nav, Navbar, Button } from 'react-bootstrap'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import SlideBook from '../component/halaman utama/SlideBook'
+import ListBook from '../component/halaman utama/ListBook'
+import IMG from '../../src/assets/img/background.png'
 import Login from '../component/halaman utama/Login'
 import Register from '../component/halaman utama/Register'
+import { useStat } from 'react'
 
+function LandingPage() {
 
-function Landingpage() {
-    const [loginShow, setLoginShow] = useState(false);
-    const [registerShow, setRegisterShow] = useState(false);
+  document.body.style.backgroundImage = IMG;
+  document.body.style.backgroundColor="#fff"
+
+  const [openLogin, setOpenLogin] = useState(null);
+
+  const [openRegister, setOpenRegister] =useState(false)
+
+  const handleClickLogin = () => {
+    setOpenLogin(true)
+  }
+
+  const handleClickRegister = () => {
+    setOpenRegister(true)
+  }
+
+  return (
+    <div>
+      <div className="navbar" style={{display : "flex", height : "7vh"}}>
+          <Navbar handleClickLogin={handleClickLogin} handleClickRegister={handleClickRegister}/>
+      </div>
     
+    { openLogin ? <Login/> : null }
 
-    const registerHere = (e) => {
-        e.preventDefault();
-        setRegisterShow(false);
-        setLoginShow(false);
-    }
+    { openRegister ? <Register/> : null }
 
-    const loginHere = (e) => {
-        e.preventDefault();
-        setLoginShow(false);
-        setRegisterShow(false);
-    }
+      <div className="body"style={{minHeight : "93vh"}}>
+        <div className="slider" style={{marginLeft : "1%", marginRight : "1%"}}>
+          <SlideBook/>
+        </div>
 
-    return (
-
-        <>
-        <div  style={{
-            backgroundImage: `url(${background})`,
-            backgroundSize: "100%",
-            width: "100%",
-          }}>
-                <div className="bodyHome">
-                    <div className="backgroundImage">
-                        <Navbar bg="transparent" expand="lg" >
-                            <Container>
-                                <Navbar.Brand href="#"><img src={logo} style={{ maxWidth: '8rem' }} alt="" /></Navbar.Brand>
-                                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                                <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-                                    <Nav className="align-items-center">
-                                            <Button variant="outline-dark" style={{ borderRadius: 0, borderWidth: '3px', width: '6rem', height: '2.5rem' }} onClick={() => setLoginShow(true)}>Login</Button>
-                                        <Nav.Link>
-                                            <Button variant="dark" style={{ borderRadius: 0, width: '6rem', height: '2.5rem' }} onClick={() => setRegisterShow(true)}>Register</Button>
-                                        </Nav.Link>
-                                    </Nav>
-                                </Navbar.Collapse>
-                            </Container>
-                        </Navbar>
-                        <Books />
-                    </div>
-                </div>
-            </div>
-           
-
-        </>
-    );
+        <div className="listBook" style={{marginTop : "50px"}}>
+          <ListBook/>
+        </div>
+      </div>
+      
+    </div>
+  )
 }
 
-export default Landingpage;
+export default LandingPage
