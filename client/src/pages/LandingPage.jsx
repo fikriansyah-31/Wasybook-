@@ -1,7 +1,6 @@
 import React from 'react'
-import background from "../assets/img/background.png";
-import AdminNav from '../component/navbar/AdminNav'
-import Navbar from "../component/navbar/PublicNavbar"
+import AdminNavbar from '../component/navbar/AdminNav'
+import PublicNavbar from "../component/navbar/PublicNavbar"
 import CustomerNavbar from "../component/navbar/Customer"
 import { useState } from 'react'
 import { useEffect } from 'react'
@@ -11,39 +10,145 @@ import ListBook from '../component/halaman utama/ListBook'
 import IMG from '../../src/assets/img/background.png'
 import Login from '../component/halaman utama/Login'
 import Register from '../component/halaman utama/Register'
-import { useStat } from 'react'
+import { Button, Modal, Form } from 'react-bootstrap'
+import { Box, TextField } from '@mui/material'
+import { Link } from 'react-router-dom';
+
 
 function LandingPage() {
 
   document.body.style.backgroundImage = IMG;
   document.body.style.backgroundColor="#fff"
 
-  const [openLogin, setOpenLogin] = useState(null);
+  const [show, setShow] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
 
-  const [openRegister, setOpenRegister] =useState(false)
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
-  const handleClickLogin = () => {
-    setOpenLogin(true)
+  const handleShowRegister = () => setShowRegister(true);
+  const handleCloseRegister = () => setShowRegister(false);
+
+  const [login, setLogin] = useState({
+    email : "",
+    password : ""
+  })
+
+  const handleOnLogin = (e) => {
+    setLogin({
+      ...login,
+      [e.target.name] : e.target.value
+    })
   }
 
-  const handleClickRegister = () => {
-    setOpenRegister(true)
+  const handleSubmitLogin = (e) => {
+    e.preventDefault()
+    console.log(login)
+  }
+
+  const [register, setRegister] = useState({
+    fullname : "",
+    email : "", 
+    password : ""
+  })
+
+  const handleOnRegister = (e) => {
+    setRegister({
+      ...register,
+      [e.target.name] : e.target.value
+    })
+  }
+
+  const handleSubmitRegister = (e) =>{
+    e.preventDefault()
+    console.log(register)
   }
 
   return (
-    <div
-    style={{
-        backgroundImage: `url(${background})`,
-        backgroundSize: "100%",
-        width: "100%",
-      }}>
+    <div>
       <div className="navbar" style={{display : "flex", height : "7vh"}}>
-          <Navbar handleClickLogin={handleClickLogin} handleClickRegister={handleClickRegister}/>
+          <PublicNavbar handleShow={handleShow} handleShowRegister={handleShowRegister}/>
       </div>
-    
-    { openLogin ? <Login/> : null }
 
-    { openRegister ? <Register/> : null }
+      <div className="modalLogin">
+        <Modal show={show} onHide={handleClose}>
+          
+            <Modal.Body style={{padding : "20px"}}>
+              <h1>Login</h1>
+              <Form onSubmit={handleSubmitLogin}>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Box
+              component="form"
+              sx={{
+                '& > :not(style)': { m: 1, width: '25ch' },
+              }}
+              noValidate
+              autoComplete="off"
+              
+            >
+              <TextField name='email' value={login.email} onChange={handleOnLogin} id="outlined-basic" label="email" variant="outlined" style={{width : "96%"}}/>
+
+              <TextField
+              id="outlined-password-input"
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+              style={{width : "96%"}}
+              name='password'
+              value={login.password}
+              onChange={handleOnLogin}
+            />
+            </Box>
+
+            <Button type='submit' variant="dark" style={{width : "96%", marginLeft : "7px", height : "50px"}}>Login</Button>
+
+            <p style={{marginLeft : "7px", marginTop : "10px"}}>Don't have an account? Click <Link to="/"> Here</Link></p>
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+        </Modal>
+      </div>
+
+      <div className="modalRegister">
+        <Modal show={showRegister} onHide={handleCloseRegister}>
+          
+            <Modal.Body style={{padding : "20px"}}>
+              <h1>Register</h1>
+              <Form onSubmit={handleSubmitRegister}>
+                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                <Box
+              component="form"
+              sx={{
+                '& > :not(style)': { m: 1, width: '25ch' },
+              }}
+              noValidate
+              autoComplete="off"
+              
+            >
+              <TextField name='email' value={register.email} onChange={handleOnRegister} id="outlined-basic" label="email" variant="outlined" style={{width : "96%"}}/>
+
+              <TextField
+              id="outlined-password-input"
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+              style={{width : "96%"}}
+              name="password"
+              value={register.password}
+              onChange={handleOnRegister}
+            />
+
+              <TextField name='fullname' value={register.fullname} onChange={handleOnRegister} id="outlined-basic" label="Fullname" variant="outlined" style={{width : "96%"}}/>
+            </Box>
+
+            <Button type='submit' variant="dark" style={{width : "96%", marginLeft : "7px", height : "50px"}}>Register</Button>
+
+            <p style={{marginLeft : "7px", marginTop : "10px"}}>Don't have an account? Click <Link to="/"> Here</Link></p>
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+        </Modal>
+      </div>
 
       <div className="body"style={{minHeight : "93vh"}}>
         <div className="slider" style={{marginLeft : "1%", marginRight : "1%"}}>

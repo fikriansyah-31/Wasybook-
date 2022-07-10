@@ -60,24 +60,20 @@ function SlideBook() {
         <Slider {...settings}>
         {data.map((item) => {
               return <div style={{display : "flex", width : "100%"}}>
-              <Card className='m-4 slideCard' key={item.id}>
-              <Row className="align-items-center">
-              <div className="img" style={{width : "50%", display : "flex"}}>
-              
-              <img src={item.img} alt="" style={{width : '170px'}}/>
-                  <Col md={9}>
-                  <p className='bookTitle' style={{ marginTop: '5px', marginBottom: '5px' }}>{item.title}</p>
-                  <p className='bookAuthor text-muted'>By. {item.author}</p>
-                  <p>{item.about}</p>
-                  <p className='bookPrice' style={{ marginTop: '2px' }}>Rp. {item.price}</p>
-                  <Button variant="dark" style={{ borderRadius: 0, width:'100%', marginBottom: '5px' }}>Add to Cart</Button>   
-                  </Col>
-                  </div>
-                <div className="card" style={{width : "50%", display : "flex", width : '100px', marginTop : "20px"}}>
-                </div>
-                </Row>
-                </Card>
-            </div>  
+              <div className="all" style={{display : "flex", flex : "50%"}}>
+              <div className="img" style={{display : "flex", marginLeft : "1%", marginRight : "1%"}}>
+                <img src={item.img} alt="" style={{width : '150px'}}/>
+              </div>
+
+              <div className="card" style={{display : "flex", width : '180px', marginLeft : "1%", marginRight : "1%", border : "none"}}>
+                <h5 style={{color : "black", wordWrap : 'break-word'}}>{item.title}</h5>
+                <p>{item.author}</p>
+                <p style={{wordWrap : "break-word"}}>{item.about}</p>
+                <h5 style={{color : "black"}}>{item.price}</h5>
+                <Button variant="contained" color="inherit">Add To Cart</Button>
+              </div>
+          </div>           
+        </div>
           })}
         </Slider>
         </div>
