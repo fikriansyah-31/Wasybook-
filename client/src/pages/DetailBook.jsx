@@ -22,11 +22,11 @@ function DetailBook() {
                             </div>
                         </Col>
                         <Col sm={6}>
-                            <p className='bookTitleDetail' style={{ marginTop: '5px', marginBottom: '5px' }}>The Case Book of Sherlock Holmes</p>
-                            <p className='bookAuthorDetail text-muted'>By. Sir Arthur Conan Doyle</p>
-                            <p className='detailTitle mb-1'>Publication Date</p>
-                            <p className='detailSentence text-muted mb-2'>August 1999</p>
-                            <p className='detailTitle mb-1'>Pages</p>
+                            <p className='bookTitleDetail' style={{ marginTop: '5px', marginBottom: '5px', fontWeight:'bold', fontSize:"33px" }}>The Case Book of Sherlock Holmes</p>
+                            <p className='bookAuthorDetail text-muted mb-3' style={{ fontSize:"25px" }}>By. Sir Arthur Conan Doyle</p>
+                            <p className='detailTitle mb-1 mt-2' style={{ fontSize:"20px", fontWeight:'bold' }}>Publication Date</p>
+                            <p className='detailSentence text-muted mb-2 mt-3' style={{ fontSize:"18px",}}>August 1999</p>
+                            <p className='detailTitle mb-1 mt-2' style={{ fontSize:"20px", fontWeight:'bold' }}>Pages</p>
                             <p className='detailSentence text-muted mb-2'>300</p>
                             <p className='detailTitle mb-2 text-danger'>ISBN</p>
                             <p className='detailSentence text-muted mb-2'>00000000000</p>
