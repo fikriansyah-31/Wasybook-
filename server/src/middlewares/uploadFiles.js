@@ -55,7 +55,8 @@ exports.uploadFiles = (bookPdf, bookImg) => {
       name: bookPdf,
       maxCount: 1,
     },
-  ]);
+  ])
+
 
   // HANDLER filter, doesn't file, LIMIT SIZE
 

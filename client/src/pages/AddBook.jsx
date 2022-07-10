@@ -1,18 +1,12 @@
 import React from 'react'
-import background from "../assets/img/background.png";
-import Form from '../component/addBook/form'
-import AdminNav from '../component/navbar/AdminNav'
+import Form from '../components/add book/form'
+import AdminNavbar from '../components/navbar/AdminNavbar'
 
 function AddBook() {
   return (
-    <div
-    style={{
-        backgroundImage: `url(${background})`,
-        backgroundSize: "100%",
-        width: "100%",
-      }}>
+    <div>
       <div className="navbar">
-        <AdminNav/>
+        <AdminNavbar/>
       </div>
 
       <div className="form" style={{marginLeft : "10%", marginRight : "10%", marginTop : "50px"}}>

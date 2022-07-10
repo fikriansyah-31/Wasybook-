@@ -1,15 +1,15 @@
 import React from 'react'
-import AdminNavbar from '../component/navbar/AdminNav'
-import PublicNavbar from "../component/navbar/PublicNavbar"
-import CustomerNavbar from "../component/navbar/Customer"
+import AdminNavbar from '../components/navbar/AdminNavbar'
+import PublicNavbar from "../components/navbar/PublicNavbar"
+import CustomerNavbar from "../components/navbar/CustomerNavbar"
 import { useState } from 'react'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import SlideBook from '../component/halaman utama/SlideBook'
-import ListBook from '../component/halaman utama/ListBook'
+import SlideBook from '../components/landing page/SlideBook'
+import ListBook from '../components/landing page/ListBook'
 import IMG from '../../src/assets/img/background.png'
-import Login from '../component/halaman utama/Login'
-import Register from '../component/halaman utama/Register'
+import Login from '../components/landing page/Login'
+import Register from '../components/landing page/Register'
 import { Button, Modal, Form } from 'react-bootstrap'
 import { Box, TextField } from '@mui/material'
 import { Link } from 'react-router-dom';

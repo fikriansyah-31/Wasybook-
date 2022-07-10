@@ -1,7 +1,7 @@
 import React from 'react'
-import CustomerNavbar from '../component/navbar/Customer'
-import MyBook from '../component/profile/myBook'
-import Profiles from '../component/profile/profiles'
+import CustomerNavbar from '../components/navbar/CustomerNavbar'
+import MyBook from '../components/profile/MyBook'
+import Profiles from '../components/profile/profiles'
 
 function Profile() {
   return (
@@ -16,7 +16,7 @@ function Profile() {
         </div>
 
         <div className="Mybook" style={{marginTop : "50px"}}>
-          <myBook/>
+          <MyBook/>
         </div>
       </div>
     </div>
