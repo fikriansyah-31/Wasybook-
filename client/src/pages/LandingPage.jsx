@@ -45,6 +45,7 @@ function LandingPage() {
     email : "",
     password : ""
   })
+  console.log(login);
 
   const handleOnLogin = (e) => {
     setLogin({
@@ -53,11 +54,7 @@ function LandingPage() {
     })
   }
 
-  const handleSubmitLogin = (e) => {
-    e.preventDefault()
-    console.log(login)
-  }
-
+  
   //Register
   const [register, setRegister] = useState({
     name : "",
@@ -71,7 +68,7 @@ function LandingPage() {
       [e.target.name] : e.target.value
     })
   }
-  console.log(register);
+  
   
 
   const handleSubmit = useMutation(async (e) => {
@@ -119,7 +116,55 @@ console.log(response);
     }
 });
   
-  
+const handleSubmitLogin = useMutation(async (e) => {
+  try {
+      e.preventDefault();
+
+      // Configuration
+      const config = {
+          headers: {
+              'Content-type': 'application/json',
+          },
+      };
+
+      // Data body
+      const body = JSON.stringify(login);
+
+      // Insert data for login process
+      const response = await API.post('/login', body, config);
+
+      // Checking process
+      if (response?.status === 200) {
+          // Send data to useContext
+          dispatch({
+              type: 'LOGIN_SUCCESS',
+              payload: response.data.data,
+          });
+
+          // Status check
+          // if (response.data.data.status === 'Admin') {
+          //     navigate('/admin');
+          // } else {
+          //     navigate('/user');
+          // }
+
+          const alert = (
+              <Alert variant="success" className="py-1">
+                  Login success
+              </Alert>
+          );
+          setMessage(alert);
+      }
+  } catch (error) {
+      const alert = (
+          <Alert variant="danger" className="py-1">
+              Login failed
+          </Alert>
+      );
+      setMessage(alert);
+      console.log(error);
+  }
+});
 
 
   const [lgShow, setLgShow] = useState(false)
@@ -135,7 +180,8 @@ console.log(response);
           
             <Modal.Body style={{padding : "20px"}}>
               <h1>Login</h1>
-              <Form onSubmit={handleSubmitLogin}>
+              {message} 
+              <Form onSubmit={(e) => handleSubmitLogin.mutate(e)}>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                 <Box
                 component="form"
