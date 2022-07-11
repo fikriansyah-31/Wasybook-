@@ -23,22 +23,13 @@ import { styled } from '@mui/material/styles';
 import img from "../../assets/img/cart2.png"
 import { useNavigate } from "react-router-dom";
 import { Nav } from "react-bootstrap";
-import IconProfile from "../../assets/img/userBlack.png"
+import IconProfile from "../../assets/img/customer.png"
 import IconComplain from "../../assets/img/chatGrey.png"
 import IconLogout from "../../assets/img/logoutRed.png"
 import Avatar from "react-avatar"
 import Profile from "../../pages/profile";
 import { Link } from "react-router-dom";
 
-
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  '& .MuiBadge-badge': {
-    right: -3,
-    top: 13,
-    border: `2px solid ${theme.palette.background.paper}`,
-    padding: '0 4px',
-  },
-}));
 
 
 function CustomerNavbar() {
@@ -57,41 +48,6 @@ function CustomerNavbar() {
     navigate('/')
   }
 
-  // const settings = [ 
-  //     'Add Book',
-  //     'Complain',
-  //     'Logout'
-  //  ];
-
-  // //  if(settings[0]){
-  // //     addBook()
-  // //  }
-
-  // //  if(settings[1]){
-  // //   complain()
-  // //  }
-
-  // //  if(settings[2]){
-  // //   logout()
-  // //  }
-
-  // const [anchorElNav, setAnchorElNav] = React.useState(null);
-  // const [anchorElUser, setAnchorElUser] = React.useState(null);
-
-  // const handleOpenNavMenu = (event) => {
-  //   setAnchorElNav(event.currentTarget);
-  // };
-  // const handleOpenUserMenu = (event) => {
-  //   setAnchorElUser(event.currentTarget);
-  // };
-
-  // const handleCloseNavMenu = () => {
-  //   setAnchorElNav(null);
-  // };
-
-  // const handleCloseUserMenu = () => {
-  //   setAnchorElUser(null);
-  // };
 
   return (
     <div style={{display : "flex", width : "100%"}}>

@@ -1,10 +1,15 @@
 import IMG from "../../assets/img/WaysBookLogo.png"
-import * as React from 'react';
+// import * as React from 'react';
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Navbar from 'react-bootstrap/Navbar'
+import {Navbar, Alert} from 'react-bootstrap'
+import { UserContext } from "../../context/userContext";
+import { API } from "../../config/api";
 
 function PublicNavbar(props) {
+
   return (
     <div style={{display : "flex", width : "100%"}}>
             <div className="left" style={{marginLeft : "50px", flex : "50%", alignItems : "center", display : "flex"}}>
@@ -13,7 +18,7 @@ function PublicNavbar(props) {
 
             <div className="right" style={{display : "flex", flex : "50%", justifyContent : "flex-end", marginRight : "50px", alignItems : "center"}}>
                 <div className="login" style={{marginRight : "20px"}}>
-                    <Button variant="outlined" color="inherit" onClick={props.handleShow}>Login</Button>
+                    <Button variant="outlined" color="inherit"  onClick={props.handleShow}>Login</Button>
                 </div>
 
                 <div className="register">

@@ -1,16 +1,13 @@
-const router = require('./src/routes')
-require("dotenv").config()
-//instantiate express module
+require("dotenv").config();
 const express = require("express");
-const bp = require("body-parser")
-const cors = require("cors")
-//Get routes to the variabel here
+const router = require("./src/routes");
+const bp = require("body-parser");
+const cors = require("cors");
 
-//use express in app variable
 const app = express();
 const port = 5000;
 const http = require("http");
-
+// const { Server } = require("socket.io");
 
 const server = http.createServer(app);
 // const io = new Server(server, {
@@ -19,14 +16,13 @@ const server = http.createServer(app);
 //   },
 // });
 
-app.use(express.json())
+// require("./src/socket")(io);
+
+app.use(express.json());
 app.use(bp.json());
 app.use(bp.urlencoded({ extended: true }));
-app.use(cors());
-
-
-//Create endpoint grouping and router here
-app.use('/api/v1/', router)
 app.use("/uploads", express.static("uploads"));
-//when this nodejs app executed, it will listen to defined port
-app.listen(port, () => console.log(`Final Task Pasti Bisa ${port}!`));
+app.use(cors());
+app.use("/api/v1/", router);
+
+server.listen(port, () => console.log(`Kontol  ${port}!`));
