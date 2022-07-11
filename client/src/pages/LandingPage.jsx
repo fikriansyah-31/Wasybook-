@@ -4,7 +4,7 @@ import PublicNavbar from "../components/navbar/PublicNavbar"
 import CustomerNavbar from "../components/navbar/CustomerNavbar"
 import { useState, useContext, } from 'react'
 import { useEffect } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import { UserContext } from "../../src/context/userContext";
 import { API } from "../../src/config/api";
 import SlideBook from '../components/landing page/SlideBook'
@@ -18,6 +18,7 @@ import users from '../Dummy Data/user'
 
 
 function LandingPage() {
+  let navigate = useNavigate();
 
   const [state, dispatch] = useContext(UserContext);
   
@@ -136,17 +137,14 @@ const handleSubmitLogin = useMutation(async (e) => {
       // Checking process
       if (response?.status === 200) {
           // Send data to useContext
+          let dataUser = response.data.data.user;
           dispatch({
               type: 'LOGIN_SUCCESS',
-              payload: response.data.data,
+              payload: dataUser,
           });
-
-          // Status check
-          // if (response.data.data.status === 'Admin') {
-          //     navigate('/admin');
-          // } else {
-          //     navigate('/user');
-          // }
+        
+           //cek status
+          // navigate("/p");
 
           const alert = (
               <Alert variant="success" className="py-1">
@@ -165,6 +163,16 @@ const handleSubmitLogin = useMutation(async (e) => {
       console.log(error);
   }
 });
+let navbarConfig = "";
+if (!state.user.role) {
+  navbarConfig = <PublicNavbar handleShow={handleShow} handleShowRegister={handleShowRegister}/>;
+}
+if (state.user.role == "customer") {
+  navbarConfig = <CustomerNavbar  />;
+}
+if (state.user.role == "admin") {
+  navbarConfig = <AdminNavbar />;
+}
 
 
   const [lgShow, setLgShow] = useState(false)
@@ -172,33 +180,33 @@ const handleSubmitLogin = useMutation(async (e) => {
   return (
     <div>
       <div className="navbar" style={{display : "flex", height : "7vh"}}>
-          <PublicNavbar handleShow={handleShow} handleShowRegister={handleShowRegister}/>
+      {navbarConfig}
+       
       </div>
-
       <div className="modalLogin">
-        <Modal show={show} onHide={handleClose}>
-          
-            <Modal.Body style={{padding : "20px"}}>
-              <h1>Login</h1>
-              {message} 
-              <Form onSubmit={(e) => handleSubmitLogin.mutate(e)}>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Box
-                component="form"
-                sx={{
-                  '& > :not(style)': { m: 1, width: '25ch' },
-                }}
-                noValidate
-                autoComplete="off"
-                
-                >
-                <TextField name='email' value={login.email} onChange={handleOnLogin} id="outlined-basic" label="email" variant="outlined" style={{width : "96%"}}/>
-
-              <TextField
-              id="outlined-password-input"
-              label="Password"
-              type="password"
-              autoComplete="current-password"
+      <Modal show={show} onHide={handleClose}>
+      
+      <Modal.Body style={{padding : "20px"}}>
+      <h1>Login</h1>
+      {message} 
+      <Form onSubmit={(e) => handleSubmitLogin.mutate(e)}>
+      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+      <Box
+      component="form"
+      sx={{
+        '& > :not(style)': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+      
+      >
+      <TextField name='email' value={login.email} onChange={handleOnLogin} id="outlined-basic" label="email" variant="outlined" style={{width : "96%"}}/>
+      
+      <TextField
+      id="outlined-password-input"
+      label="Password"
+      type="password"
+      autoComplete="current-password"
               style={{width : "96%"}}
               name='password'
               value={login.password}
@@ -207,23 +215,23 @@ const handleSubmitLogin = useMutation(async (e) => {
             </Box>
 
             <Button type='submit' variant="dark" style={{width : "96%", marginLeft : "7px", height : "50px"}}>Login</Button>
-
+            
             <p style={{marginLeft : "7px", marginTop : "10px"}}>Don't have an account? Click <Link to="/"> Here</Link></p>
-                </Form.Group>
-              </Form>
+            </Form.Group>
+            </Form>
             </Modal.Body>
-        </Modal>
+            </Modal>
       </div>
-
+      
       <div className="modalRegister">
-        <Modal show={showRegister} onHide={handleCloseRegister}>
-          
+      <Modal show={showRegister} onHide={handleCloseRegister}>
+      
             <Modal.Body style={{padding : "20px"}}>
               <h1>Register</h1>
               {message} 
               <Form onSubmit={(e) => handleSubmit.mutate(e)}>
-                <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                <Box
+              <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+              <Box
               component="form"
               sx={{
                 '& > :not(style)': { m: 1, width: '25ch' },
@@ -231,9 +239,9 @@ const handleSubmitLogin = useMutation(async (e) => {
               noValidate
               autoComplete="off"
               
-            >
+              >
               <TextField name='email' value={register.email} onChange={handleOnRegister} id="outlined-basic" label="email" variant="outlined" style={{width : "96%"}}/>
-
+              
               <TextField
               id="outlined-password-input"
               label="Password"
@@ -244,7 +252,7 @@ const handleSubmitLogin = useMutation(async (e) => {
               value={register.password}
               onChange={handleOnRegister}
               
-            />
+              />
 
               <TextField name='name' value={register.name} onChange={handleOnRegister} id="outlined-basic" label="Fullname" variant="outlined" style={{width : "96%"}}/>
             </Box>
@@ -259,16 +267,16 @@ const handleSubmitLogin = useMutation(async (e) => {
       </div>
 
       <div className="body"style={{minHeight : "93vh"}}>
-
+      
         <div className="modal">
-            <Modal
-            size="lg"
-            show={lgShow}
-            onHide={() => setLgShow(false)}
-            aria-labelledby="example-modal-sizes-title-lg"
-            style={{}}
-          >
-
+        <Modal
+        size="lg"
+        show={lgShow}
+        onHide={() => setLgShow(false)}
+        aria-labelledby="example-modal-sizes-title-lg"
+        style={{}}
+        >
+        
               <Modal.Body style={{textAlign : "center", color : "rgba(65, 222, 40, 0.85)", background : "transparent"}}>This Product Is Sucessfully Added To Cart</Modal.Body>
             </Modal>
         </div>
