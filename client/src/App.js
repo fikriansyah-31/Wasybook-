@@ -33,7 +33,7 @@ function App() {
       if (state.user.role == "admin") {
         navigate("/transaction");
       } else   {
-        navigate("/");
+        navigate("/profile");
       }
     }
   }, [state]);
