@@ -1,67 +1,59 @@
-const express = require("express");
-const { auth } = require("../middlewares/auth.js");
-const { uploadFiles } = require("../middlewares/uploadFiles.js");
-const { uploadImg } = require("../middlewares/uploadFile.js"); // One Image for Profile
+const express = require('express')
+const router = express.Router()
 
-const { register,
-        login,
-        checkAuth } = require("../controllers/auth");
+// Controller:
+const { register, login, checkAuth } = require('../controllers/auth')
+const { getUsers, getUser, updateUser, deleteUser } = require('../controllers/user')
+const { getProfile, updateProfile } = require('../controllers/profile')
+const { addBooks, getBooks, getBook, updateBooks, deleteBook, promoBooks } = require('../controllers/book')
+const { addCart, getCart, deleteCart } = require('../controllers/cart')
+const { getTransactions, addTransaction, notification } = require('../controllers/transaction')
+const { getPurchased, getOnePurchased } = require('../controllers/purchased')
 
-const { getBooks,
-        addBooks,
-        getBook,
-        updateBooks,
-        promoBooks,
-        deleteBook, } = require("../controllers/book");
+// Middleware:
+// Authentication
+const { auth } = require('../middlewares/auth')
+// Upload Avatar
+const { uploadFile } = require('../middlewares/uploadFile')
+// Upload bookPdf & bookImg
+const { uploadFiles } = require('../middlewares/uploadFiles')
 
-const { addCart,
-        getCart,
-        deleteCart,} = require ("../controllers/cart")
-const { getProfile, updateProfile } = require("../controllers/profile.js");
+// Route:
+// Auth
+router.post('/register', register)
+router.post('/login', login)
+router.get('/check-auth', auth, checkAuth)
 
-const {
-    addTransaction,
-    getTrxs,
-    notification,
-  } = require("../controllers/transaction.js");
+// User
+router.get('/users', getUsers)
+router.get('/user/:id', getUser)
+router.patch('/user/:id', auth, updateUser)
+router.delete('/user/:id', auth, deleteUser)
 
-const {
-    getPurchased,
-    getOnePurchased,
-  } = require("../controllers/purchased.js");
+// Profile
+router.get('/profile', auth, getProfile);
+router.patch('/profile', auth, uploadFile('avatar'), updateProfile);
 
-const router = express.Router();
+// Book
+router.post('/book', auth, uploadFiles('bookPdf', 'bookImg'), addBooks)
+router.get('/books', getBooks)
+router.get('/book/:id', auth, getBook)
+router.patch('/book/:id', auth, uploadFiles('bookPdf', 'bookImg'), updateBooks)
+router.delete('/book/:id', auth, deleteBook)
+router.get('/promo-books', promoBooks)
 
-//=== Auth ===
-router.post("/register", register);
-router.post("/login", login)
-router.get("/check-auth", auth, checkAuth);
+// Cart
+router.post('/cart', auth, addCart)
+router.get('/carts', auth, getCart)
+router.delete('/cart/:id', auth, deleteCart)
 
-//=== Book ===
-router.get("/books", getBooks)
-router.get("/book/:id",auth, getBook)
-router.get("/promo-books", promoBooks);
-router.delete("/delete-book/:id", deleteBook)
-router.patch("/book/:id", auth, uploadFiles("bookPdf", "bookImg"), updateBooks); // Arah file ke image dan pdf yang dari middleware 
-router.post("/book", auth, uploadFiles("bookPdf", "bookImg"), addBooks)
+// Transaction
+router.get('/transactions', auth, getTransactions)
+router.post('/transaction', auth, addTransaction)
+router.post('/notification', notification)
 
+// Purchased
+router.get('/purchased-books', auth, getPurchased)
+router.get('/purchased-book/:id', auth, getOnePurchased)
 
-//== Cart ===
-router.post("/cart", addCart)
-router.delete("/cart/:id", deleteCart)
-router.get("carts", getCart)
-
-//== Profile ==
-router.get("/profile", auth, getProfile);
-router.patch("/profile", auth, uploadImg("avatar"), updateProfile);
-
-//== Transactions ==
-router.post("/transaction", auth, addTransaction);
-router.get("/transactions", auth, getTrxs);
-router.post("/notification", notification);
-
-//== Purchased Book ==
-router.get("/purchased-books", auth, getPurchased);
-router.get("/purchased/:id", auth, getOnePurchased);
-
-module.exports = router 
+module.exports = router

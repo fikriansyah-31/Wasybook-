@@ -1,118 +1,9 @@
-const { book } = require("../../models")
-const { Op } = require("sequelize")
+const { book } = require('../../models')
+const { Op } = require('sequelize')
 
-//== Promo Book
-exports.promoBooks = async (req, res) => {
-  try {
-    let data = await book.findAll({
-      where: {
-        price: {
-           // Operator Less than or Equal ( <= ) kurang dari atau sama dengan 
-          [Op.lte]: 55000,
-          // Akan Menampilkan data atau value yang lebih dari nominal yang di tentukan 
-        },
-      },
-    });
-
-    data = data.map((item) => {
-      item.bookPdf = process.env.PATH_FILE_PDF + item.bookPdf;
-      item.bookImg = process.env.PATH_FILE_IMG + item.bookImg;
-      return item;
-    });
-
-    res.send({
-      status: "success",
-      data: {
-        promoBooks: data,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    res.send({
-      status: "Failed",
-      message: "Error Fetching Promo Books",
-    });
-  }
-};
-//== Get All Book
-exports.getBooks = async (req, res) => {
-    try {
-        let data = await book.findAll({
-            raw: true,
-            where: {
-                price: {
-                    //Operator Greater than or equal operator ( >= ) lebih dari atau sama dengan
-                    [Op.gte]: 1,
-                    //Akan menampilkan data atau value yang lebih dari 10 atau sama dengan 10
-                },
-            },
-            attributes: {
-                exclude: ["createAt", "updateAt"],
-            },
-        })
-
-        //Data yang di Map
-        data = data.map((item) => {
-            item.bookPdf = process.env.PATH_FILE_PDF + item.bookPdf
-            item.bookImg = process.env.PATH_FILE_IMG + item.bookImg
-            return item
-        })
-
-        res.send({
-            status: "Success",
-            data: {
-                books: data,
-            },
-        })
-
-    } catch (error) {
-        console.log(error);
-        res.send({
-        status: "Failed",
-        message: "Error Mengambil Semua Buku",
-    });
-    }
-}
-//== Get Book Id 
-exports.getBook = async (req, res) => {
-    try {
-        const { id } = req.params
-
-        let data = await book.findOne({
-            raw: true,
-            where: {
-                id,
-            },
-            attributes: {
-                exclude: ["createAt", "updateAt"],
-            },
-        })
-
-        data = {
-            ...data,
-            bookPdf: process.env.PATH_FILE_PDF + data.bookPdf,
-            bookImg: process.env.PATH_FILE_IMG + data.bookImg,
-        }
-
-        res.send({
-            status: "Success",
-            data: {
-                book: data,
-            },
-        })        
-
-    } catch (error) {
-        res.send({
-            status: "Failed",
-            message: "Kesalahan Mengambil Buku",
-          });
-    }
-}
-
-//== Post Book
 exports.addBooks = async (req, res) => {
     try {
-        let data = {
+        const data = {
             title: req.body.title,
             year: req.body.year,
             author: req.body.author,
@@ -122,97 +13,201 @@ exports.addBooks = async (req, res) => {
             desc: req.body.desc,
             bookPdf: req.files.bookPdf[0].filename,
             bookImg: req.files.bookImg[0].filename,
-        }
+        };
 
-    let newBook = await book.create(data)
+        let newBook = await book.create(data);
 
-    let newBookData = await book.findOne({
-        where: {
-            id: newBook.id ,
-        },
-        attributes: {
-            exclude: ["createAt", "updateAt"],
-        },
-    })
-
-    res.send({
-        status: "Success",
-        data: {
-            books: {
-                ...newBookData.dataValues,
-                bookPdf: process.env.PATH_FILE_PDF + data.bookPdf,
-                bookImg: process.env.PATH_FILE_IMG + data.bookImg,
-            },
-        },
-    }) 
-
-    } catch (error) {
-        console.log(error);
-        res.send({
-          status: "Failed",
-          message: "Kesalahan Menambahkan Buku",
-        });
-    }
-}
-
-//== Update Book
-exports.updateBooks = async (req, res) => {
-    try {
-        const { id } = req.params
-
-        let data = {
-            price: req.body.price,
-        }
-
-        let newBook = await book.update(data, {
+        let bookData = await book.findOne({
             where: {
-                id,
-            },
-        })
-
-        let newBookData = await book.findOne({
-            where: {
-                id,
+                id: newBook.id,
             },
             attributes: {
-                exclude: ["createAt", "updateAt"],
+                exclude: ["createdAt", "updatedAt"],
             },
-        })
+        });
+
+        bookData = JSON.parse(JSON.stringify(bookData))
 
         res.send({
-          status: "Success",
-          data,
+            status: "success",
+            data: {
+                books: {
+                    ...bookData,
+                    bookPdf: process.env.FILE_PATH_PDF + bookData.bookPdf,
+                    bookImg: process.env.FILE_PATH_IMAGE + bookData.bookImg,
+                },
+            },
         });
     } catch (error) {
         console.log(error);
         res.send({
-          status: "Failed",
-          message: "Kesalahan Update Buku",
+            status: "Failed",
+            message: "Server Error",
         });
     }
-}
+};
 
-//== Delete Book
-exports.deleteBook = async (req, res) => {
+exports.getBooks = async (req, res) => {
     try {
-        const { id } = req.params
-
-        await book.destroy({
+        let data = await book.findAll({
             where: {
-                id,
+                price: {
+                    [Op.gte]: 10,
+                },
+            },
+            attributes: {
+                exclude: ["createdAt", "updatedAt"],
+            },
+        });
+
+        data = JSON.parse(JSON.stringify(data))
+        data = data.map((item) => {
+            return {
+                ...item,
+                bookImg: process.env.FILE_PATH_IMAGE + item.bookImg,
+                bookPdf: process.env.FILE_PATH_PDF + item.bookPdf
             }
         })
 
         res.send({
-            status: "Success"
-          });
-
-
+            status: "success",
+            data: {
+                books: data,
+            },
+        });
     } catch (error) {
-         console.log(error);
+        console.log(error);
         res.send({
-          status: "Failed",
-          message: "Kesalahan Hapus Buku",
+            status: "Failed",
+            message: "Server Error",
         });
     }
-}
+};
+
+exports.getBook = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        let data = await book.findOne({
+            where: {
+                id,
+            },
+            attributes: {
+                exclude: ["createdAt", "updatedAt"],
+            },
+        });
+
+        data = JSON.parse(JSON.stringify(data))
+        data = {
+            ...data,
+            bookImg: process.env.FILE_PATH_IMAGE + data.bookImg,
+            bookPdf: process.env.FILE_PATH_PDF + data.bookPdf
+        };
+
+        res.send({
+            status: "success",
+            data: {
+                book: data,
+            },
+        });
+    } catch (error) {
+        res.send({
+            status: "Failed",
+            message: "Server Error",
+        });
+    }
+};
+
+exports.updateBooks = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        let data = {
+            price: req.body.price,
+        };
+
+        await book.update(data, {
+            where: {
+                id,
+            },
+        });
+
+        let bookData = await book.findOne({
+            where: {
+                id,
+            },
+            attributes: {
+                exclude: ["createdAt", "updatedAt"],
+            },
+        });
+
+        res.send({
+            status: "success",
+            bookData,
+        });
+    } catch (error) {
+        console.log(error);
+        res.send({
+            status: "Failed",
+            message: "Server Error",
+        });
+    }
+};
+
+exports.deleteBook = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        await book.destroy({
+            where: {
+                id,
+            },
+        });
+
+        res.send({
+            status: "Delete success",
+        });
+    } catch (error) {
+        console.log(error);
+        res.send({
+            status: "Failed",
+            message: "Server Error",
+        });
+    }
+};
+
+exports.promoBooks = async (req, res) => {
+    try {
+        let data = await book.findAll({
+            where: {
+                price: {
+                    [Op.lte]: 100000,
+                },
+            },
+            attributes: {
+                exclude: ["createdAt", "updatedAt"],
+            },
+        });
+
+        data = data.map((item) => {
+            return {
+                item,
+                bookPdf: process.env.FILE_PATH_PDF + item.bookPdf,
+                bookImg: process.env.FILE_PATH_IMAGE + item.bookImg,
+            }
+        });
+
+        res.send({
+            status: "success",
+            data: {
+                promoBooks: data,
+            },
+        });
+    } catch (error) {
+        console.log(error);
+        res.send({
+            status: "Failed",
+            message: "Error Fetching Promo Books",
+        });
+    }
+};

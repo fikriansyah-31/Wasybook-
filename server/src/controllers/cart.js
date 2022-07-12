@@ -1,16 +1,15 @@
-const { user, book, cart } = require("../../models") 
+const { user, book, cart } = require('../../models')
 
-//== Menambahkan Cart
 exports.addCart = async (req, res) => {
     try {
-        let idUser = req.user.id //idUser memiliki parameter req 
+        let idUser = req.user.id;
 
-        let data= { // disini objek bernama Data memiliki property idUser dan variabel idUser
+        let data = {
             idUser: idUser,
             idProduct: req.body.idProduct,
-            total: 0, 
+            total: 0,
             qty: 0,
-        }
+        };
 
         let getProduct = await book.findOne({
             where: {
@@ -18,102 +17,99 @@ exports.addCart = async (req, res) => {
             },
             attributes: {
                 exclude: ["createdAt", "updatedAt"],
-             },
-        })
+            },
+        });
 
         data = {
             ...data,
-            total:getProduct.price,
-            qty: 1
-        }
+            total: getProduct.price,
+            qty: 1,
+        };
 
-        let addCart = await cart.create(data)
+        let addCart = await cart.create(data);
 
         res.send({
-            status:"Succes",
+            status: "success",
             addCart,
-        })
-
+        });
     } catch (error) {
         console.log(error);
         res.send({
-        status: "Failed",
-        message: "Kesalahan Menambahkan Cart",
-        });       
+            status: "Failed",
+            message: "Server Error",
+        });
     }
-}
+};
 
-//== All Data Cart
 exports.getCart = async (req, res) => {
     try {
-        let idUser = req.user.id
+        let idUser = req.user.id;
 
         let getCart = await cart.findAll({
-            where : {
-                idUser : idUser
+            where: {
+                idUser: idUser,
             },
-            attributes:{
-                exclude :["createAt", "updateAt"]
+            attributes: {
+                exclude: ["createdAt", "updatedAt"],
             },
-            include :[
+            include: [
                 {
-                    model : user,
+                    model: user,
                     as: "user",
-                    attributes:{
-                        exclude: ["createdAt", "password", "updatedAt", "id"]
+                    attributes: {
+                        exclude: ["createdAt", "password", "updatedAt", "id"],
                     },
                 },
                 {
                     model: book,
                     as: "book",
                     attributes: {
-                        exclude: ["createAt", "updateAt"]
-                    }
-                }
-            ]
-        })
+                        exclude: ["createdAt", "updatedAt"],
+                    },
+                },
+            ],
+        });
 
+        getCart = JSON.parse(JSON.stringify(getCart))
         getCart = getCart.map((item) => {
-            item.book.bookPdf = process.env.PATH_FILE_PDF + item.book.bookPdf;
-            item.book.bookImg = process.env.PATH_FILE_IMG + item.book.bookImg;
-            return item;
-        })
+            return {
+                ...item,
+                bookPdf: process.env.FILE_PATH_PDF + item.book.bookPdf,
+                bookImg: process.env.FILE_PATH_IMAGE + item.book.bookImg
+            };
+        });
 
         res.send({
             status: "Success",
             getCart,
-        })
-
+        });
     } catch (error) {
         console.log(error);
         res.send({
             status: "Failed",
-            message:"Kesalaham menampilkan cart"
-        })       
+            message: "Server Error",
+        });
     }
-}
+};
 
-//== Menghapus Cart
 exports.deleteCart = async (req, res) => {
     try {
-        const { id } = req.params
+        let { id } = req.params;
 
         await cart.destroy({
             where: {
                 id,
-            }
-        })
+            },
+        });
 
         res.send({
-            status: "Success"
-          });
-
-
+            status: "success",
+        });
     } catch (error) {
         console.log(error);
         res.send({
-        status: "Failed",
-        message: "Kesalahan Hapus Cart",
+            status: "Failed",
+            message: "Server Error",
         });
     }
-}
+};

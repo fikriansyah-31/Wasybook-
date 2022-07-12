@@ -1,94 +1,92 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom"
-import AddBook from "./pages/AddBook";
-import Cart from "./pages/cart";
-import Complain from "./pages/Complain";
-import DetailBook from "./pages/DetailBook";
+import React, { useEffect, useContext } from "react";
+import { Route, Routes, useNavigate } from 'react-router-dom';
+
+// Admin Page:
+import ListTransaction from "./pages/Admin/ListTransaction";
+import AddBook from "./pages/Admin/AddBook";
+import ComplainUser from "./pages/User/ComplainUser";
+
+// User Page:
 import LandingPage from "./pages/LandingPage";
-import Profile from "./pages/profile";
-import Transaction from "./pages/transaction";
-// import PublicNavbar from "./components/navbar/PublicNavbar";
-import AdminNavbar from "./components/navbar/AdminNavbar";
-import AdminComplain from "./pages/AdminComplain";
-import CustomerLogin from "./pages/CustomerLogin";
+import DetailBook from "./pages/User/DetailBook";
+import Cart from "./pages/User/Cart";
+import Profile from "./pages/User/Profile";
 
-import { API, setAuthToken } from './config/api'
-import { useContext, useEffect } from 'react'
 import { UserContext } from './context/userContext';
+import { API, setAuthToken } from './config/api';
+import ComplainAdmin from "./pages/Admin/ComplainAdmin";
 
-// init token on axios every time the app is refreshed
 if (localStorage.token) {
-  setAuthToken(localStorage.token);
+  setAuthToken(localStorage.token)
 }
 
 function App() {
-  let navigate = useNavigate();
-
-  const [state, dispatch] = useContext(UserContext);
+  let navigate = useNavigate()
+  // Init user context
+  const [state, dispatch] = useContext(UserContext)
+  // console.clear()
+  // console.log(state)
 
   useEffect(() => {
+    if (localStorage.token) {
+      setAuthToken(localStorage.token)
+    }
     // Redirect Auth
-    if (state.isLogin == false) {
-      navigate("/");
+    if (state.isLogin === false) {
+      navigate('/')
     } else {
-      if (state.user.role == "admin") {
-        navigate("/transaction");
-      } else   {
-        navigate("/profile");
+      if (state.user.role === 'admin') {
+        navigate('/list-transaction')
+      } else if (state.user.role === 'customer') {
+        navigate('/')
       }
     }
-  }, [state]);
+  }, [state])
 
-  const checkUser = async () => {
+  const checkAuth = async () => {
     try {
-      const response = await API.get("/check-auth");
+      const response = await API.get('/check-auth')
+      // console.log('response:', response);
 
       // If the token incorrect
       if (response.status === 404) {
         return dispatch({
-          type: "AUTH_ERROR",
-        });
+          type: 'AUTH_ERROR',
+        })
       }
-
-      console.log(response);
-
       // Get user data
-      let payload = response.data.data.user;
+      let payload = response.data.data.user
+      // console.log('payload:', payload);
       // Get token from local storage
-      payload.token = localStorage.token;
+      payload.token = localStorage.token
 
       // Send data to useContext
       dispatch({
-        type: "USER_SUCCESS",
+        type: 'USER_SUCCESS',
         payload,
-      });
+      })
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   useEffect(() => {
-    checkUser();
-  }, []);
+    if (localStorage.token) {
+      checkAuth()
+    }
+  }, [])
 
   return (
-    
-      <Routes>
-      <Route path="/" element={<LandingPage/>}/>
-     
-        <Route path="/detail-book" element={<DetailBook/>}/>
-        <Route path="/profile" element={<Profile/>}/>
-        <Route path="/cart" element={<Cart/>}/>
-        <Route path="/customer-login" element={<CustomerLogin/>}/>
-        <Route path="/complain" element={<Complain/>}/>
-      
-        
-        <Route path="/transaction" element={<Transaction/>}/>
-        <Route path="/add-book" element={<AddBook/>}/>
-        <Route path="/admin-complain" element={<AdminComplain/>}/>
-        <Route path="/public" element={<AdminNavbar/>}/>
-       
-      </Routes>
-
+    <Routes>
+      <Route path="/complain-user"element={<ComplainUser/>} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/detail-book/:id" element={<DetailBook />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/list-transaction" element={<ListTransaction />} />
+      <Route path="add-book" element={<AddBook />} />
+      <Route path="/complain-admin"element={<ComplainAdmin/>} />
+    </Routes>
   );
 }
 

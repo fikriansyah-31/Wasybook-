@@ -1,74 +1,86 @@
-const { user, profile, book } = require("../../models");
+const { profile, user } = require('../../models')
 
 exports.getProfile = async (req, res) => {
-  try {
-    let { id } = req.user;
+    try {
+        const idUser = req.user.id
 
-    let data = await profile.findOne({
-      raw: true,
-      where: {
-        idUser: id,
-      },
-      include: {
-        model: user,
-        as: "user",
-        attributes: {
-          exclude: ["createdAt", "password", "updatedAt", "id"],
-        },
-      },
-      attributes: {
-        exclude: ["createdAt", "updatedAt"],
-      },
-    });
+        let data = await profile.findOne({
+            where: {
+                idUser,
+            },
+            include: [
+                {
+                    model: user,
+                    as: 'user',
+                    attributes: {
+                        exclude: ['id', 'createdAt', 'updatedAt', 'password'],
+                    },
+                },
+            ],
+            attributes: {
+                exclude: ['createdAt', 'updatedAt'],
+            },
+        })
 
-    if (data.avatar) {
-      data = {
-        ...data,
-        avatar: process.env.PATH_FILE_AVA + data.avatar,
-      };
+        data = JSON.parse(JSON.stringify(data))
+
+        data = {
+            ...data,
+            avatar: process.env.FILE_PATH_PROFILE + data?.avatar
+        }
+
+        res.send({
+            status: 'success',
+            data,
+        })
+    } catch (error) {
+        console.log(error)
+        res.send({
+            status: 'failed',
+            message: 'Server Error',
+        })
     }
-
-    res.send({
-      status: "success",
-      data: {
-        profile: data,
-      },
-    });
-  } catch (error) {
-    console.log(error);
-    res.send({
-      status: "Failed",
-      message: "Get Profile Failed",
-    });
-  }
-};
+}
 
 exports.updateProfile = async (req, res) => {
-  try {
-    const { id } = req.user;
+    try {
+        let id = req.user.id
+        const dataExist = await profile.findOne({
+            where: { idUser: id }
+        })
 
-    let data = {
-      gender: req?.body?.gender,
-      phone: req?.body?.phone,
-      address: req?.body?.address,
-      avatar: req?.file?.filename,
-    };
+        if (!dataExist) {
+            return res.send({
+                message: `Profile with idUser: ${id} not found!`
+            })
+        }
 
-    await profile.update(data, {
-      where: {
-        idUser: id,
-      },
-    });
 
-    res.send({
-      status: "success",
-      data,
-    });
-  } catch (error) {
-    console.log(error);
-    res.send({
-      status: "Failed",
-      message: "Edit Profile Failed",
-    });
-  }
-};
+        let data = {
+            phone: req?.body?.phone,
+            gender: req?.body?.gender,
+            address: req?.body?.address,
+            avatar: req?.file?.filename,
+        }
+
+        await profile.update(data, {
+            where: {
+                idUser: id
+            },
+        })
+
+        res.send({
+            status: 'success',
+            data: {
+                ...data,
+                avatar: process.env.FILE_PATH_PROFILE + data.avatar
+            }
+        })
+    } catch (error) {
+        console.log(error)
+        res.send({
+            status: 'failed',
+            message: 'Server Error',
+        })
+    }
+}

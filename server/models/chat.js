@@ -11,13 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
+      //belongsTo association to user model
       chat.belongsTo(models.user, {
         as: "sender",
         foreignKey: {
           name: "idSender",
         },
       });
-
       chat.belongsTo(models.user, {
         as: "recipient",
         foreignKey: {

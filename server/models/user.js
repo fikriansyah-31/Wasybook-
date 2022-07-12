@@ -11,30 +11,39 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
+      //hasOne association to profile model
       user.hasOne(models.profile, {
         as: "profile",
         foreignKey: {
           name: "idUser",
         },
       });
+
+      //hasMany association to cart model
       user.hasMany(models.cart, {
         as: "cart",
         foreignKey: {
           name: "idUser",
         },
       });
+
+      //hasMany association to transaction model
       user.hasMany(models.transaction, {
         as: "transaction",
         foreignKey: {
           name: "idUser",
         },
       });
+
+      //hasMany association to purchasedBook model
       user.hasMany(models.purchasedBook, {
         as: "purchasedBook",
         foreignKey: {
           name: "idUser",
         },
       });
+
       //hasMany association to chat model
       user.hasMany(models.chat, {
         as: "senderMessage",
@@ -51,9 +60,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   user.init({
+    name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    name: DataTypes.STRING,
     role: DataTypes.STRING
   }, {
     sequelize,
